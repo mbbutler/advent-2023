@@ -22,9 +22,9 @@ struct Part {
 
 impl Part {
     fn gen_box_coords(&self) -> Vec<(usize, usize)> {
-        let x: Vec<usize> = (self.line.saturating_sub(1)..=self.line + 1).collect();
-        let y: Vec<usize> = (self.bounds.start.saturating_sub(1)..=self.bounds.end).collect();
-        iproduct!(x, y).collect()
+        let i: Vec<usize> = (self.line.saturating_sub(1)..=self.line + 1).collect();
+        let j: Vec<usize> = (self.bounds.start.saturating_sub(1)..=self.bounds.end).collect();
+        iproduct!(i, j).collect()
     }
 
     fn check_part(&self, set: &BTreeSet<(usize, usize)>) -> bool {
