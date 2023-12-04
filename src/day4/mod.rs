@@ -78,10 +78,13 @@ pub fn day_4b() {
     let wins: Vec<usize> = lines.map(|l| calc_game_wins(&l)).collect();
     let mut cards = vec![1_usize; wins.len()];
     for (i, win) in wins.iter().enumerate() {
-        for j in (i + 1)..=(i + win) {
-            cards[j] += cards[i];
-        }
+        let card_val = cards[i];
+        cards
+            .get_mut((i + 1)..=(i + win))
+            .unwrap()
+            .iter_mut()
+            .for_each(|x| *x += card_val);
     }
     let total = cards.into_iter().reduce(|acc, e| acc + e);
-    println!("Day 4a answer = {}", total.unwrap());
+    println!("Day 4b answer = {}", total.unwrap());
 }
