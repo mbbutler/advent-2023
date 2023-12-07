@@ -1,10 +1,9 @@
+use itertools::Itertools;
 use std::ops::Range;
 use std::{
     fs::File,
     io::{self, BufRead},
 };
-
-use itertools::Itertools;
 
 /*******************************************************************************************/
 /*                                                                                         */
