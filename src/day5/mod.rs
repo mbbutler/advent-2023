@@ -106,13 +106,18 @@ trait Map {
 }
 
 impl Map for Range<usize> {
+    // Need to keep track of which ranges have been modified otherwise they can accidentally be
+    // mapped a second time by the same ItemMap if they fall into the range of another RangeMap
     fn apply_map(&self, map: &RangeMap) -> MapResult {
         if self.end <= map.src.start || self.start >= map.src.end {
+            // The two ranges don't overlap so return original range unmodified
             return MapResult {
                 unmodifed: vec![self.clone()],
                 modified: vec![],
             };
         } else if self.start >= map.src.start && self.end <= map.src.end {
+            // The range is fully contained in the RangeMap's src so it will remain a single range
+            // that is fully mapped to RangeMap's dest
             return MapResult {
                 unmodifed: vec![],
                 modified: vec![Range {
@@ -121,6 +126,8 @@ impl Map for Range<usize> {
                 }],
             };
         } else if self.end <= map.src.end {
+            // The range partially overlaps with the RangeMap's src on the former's high-side, so
+            // it will be broken into two ranges
             return MapResult {
                 unmodifed: vec![Range {
                     start: self.start,
@@ -132,6 +139,8 @@ impl Map for Range<usize> {
                 }],
             };
         } else if self.start >= map.src.start {
+            // The range partially overlaps with the RangeMap's src on the former's low-side, so
+            // it will be broken into two ranges
             return MapResult {
                 unmodifed: vec![Range {
                     start: map.src.end,
@@ -143,6 +152,8 @@ impl Map for Range<usize> {
                 }],
             };
         } else {
+            // The range entirely encompasses the RangeMap's src range, so it will be broken into
+            // three ranges
             return MapResult {
                 unmodifed: vec![
                     Range {
