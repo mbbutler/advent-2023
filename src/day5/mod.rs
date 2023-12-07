@@ -8,7 +8,7 @@ use itertools::Itertools;
 
 /*******************************************************************************************/
 /*                                                                                         */
-/*                                        DAY 5A                                           */
+/*                             Structs for both Questions                                  */
 /*                                                                                         */
 /*******************************************************************************************/
 
@@ -21,19 +21,6 @@ struct RangeMap {
 #[derive(Debug)]
 struct ItemMap {
     maps: Vec<RangeMap>,
-}
-
-fn map_value(val: usize, map: &ItemMap) -> usize {
-    map.maps
-        .iter()
-        .find_map(|m| {
-            if m.src.contains(&val) {
-                Some(m.dest + val - m.src.start)
-            } else {
-                None
-            }
-        })
-        .unwrap_or(val)
 }
 
 fn parse_maps(lines: &mut impl Iterator<Item = String>) -> Vec<ItemMap> {
@@ -56,6 +43,25 @@ fn parse_maps(lines: &mut impl Iterator<Item = String>) -> Vec<ItemMap> {
         }
     }
     item_maps
+}
+
+/*******************************************************************************************/
+/*                                                                                         */
+/*                                        DAY 5A                                           */
+/*                                                                                         */
+/*******************************************************************************************/
+
+fn map_value(val: usize, map: &ItemMap) -> usize {
+    map.maps
+        .iter()
+        .find_map(|m| {
+            if m.src.contains(&val) {
+                Some(m.dest + val - m.src.start)
+            } else {
+                None
+            }
+        })
+        .unwrap_or(val)
 }
 
 pub fn day_5a() {
@@ -85,6 +91,12 @@ pub fn day_5a() {
 
     println!("Day 5a answer = {}", lowest.unwrap());
 }
+
+/*******************************************************************************************/
+/*                                                                                         */
+/*                                        DAY 5A                                           */
+/*                                                                                         */
+/*******************************************************************************************/
 
 struct MapResult {
     unmodifed: Vec<Range<usize>>,
